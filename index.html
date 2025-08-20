@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WhatsApp Chat Viewer</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo-circle"></div>
+          <div class="brand-text">Chat Viewer</div>
+        </div>
+        <div class="controls">
+          <label class="file-upload" for="fileInput">
+            <input type="file" id="fileInput" accept=".txt" />
+            <span>Upload chat (.txt)</span>
+          </label>
+          <div class="dropzone" id="dropzone" title="Drag & drop the exported chat .txt file here">Drop chat .txt here</div>
+          <input id="userNameInput" class="text-input" placeholder="Your name (as in chat)" />
+          <input id="searchInput" class="text-input" placeholder="Search messages" />
+          <button id="resetBtn" class="btn" title="Reset filters and view">Reset</button>
+          <button id="clearBtn" class="btn btn-secondary" title="Clear messages">Clear</button>
+          <button id="scrollBottomBtn" class="btn" title="Scroll to bottom">Bottom ⤓</button>
+        </div>
+      </header>
+
+      <main class="chat-wrapper">
+        <div id="chatBackground" class="chat-bg"></div>
+        <section id="chatContainer" class="chat-container" aria-live="polite"></section>
+      </main>
+
+      <footer class="composer">
+        <input id="composerInput" class="composer-input" placeholder="Type a sample message to preview…" />
+        <button id="sendPreviewBtn" class="composer-send" title="Preview send">➤</button>
+      </footer>
+    </div>
+
+    <template id="templates">
+      <div class="msg-row">
+        <div class="msg-bubble">
+          <div class="msg-sender"></div>
+          <div class="msg-text"></div>
+          <div class="msg-meta">
+            <span class="msg-time"></span>
+            <span class="msg-ticks" aria-hidden="true">
+              <svg viewBox="0 0 16 16" class="tick tick-1"><path d="M1 8l3 3 6-6"/></svg>
+              <svg viewBox="0 0 16 16" class="tick tick-2"><path d="M5 10l3 3 7-7"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+  </html>
+
