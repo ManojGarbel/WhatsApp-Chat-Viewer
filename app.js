@@ -12,12 +12,16 @@
   const scrollBottomBtn = document.getElementById('scrollBottomBtn');
   const composerInput = document.getElementById('composerInput');
   const sendPreviewBtn = document.getElementById('sendPreviewBtn');
+  const helpBtn = document.getElementById('helpBtn');
+  const helpModal = document.getElementById('helpModal');
+  const closeHelpBtn = document.getElementById('closeHelpBtn');
 
   /** State */
   let allMessages = []; // canonical model
   let filteredMessages = []; // after search
   let isGroup = false;
   let viewerName = '';
+  let readObserver = null;
 
   // Utils
   const normalizeMediaOmitted = (text) => {
@@ -235,6 +239,9 @@
     }
 
     chatContainer.appendChild(frag);
+
+    // Set up read-status observer: when out messages become visible, mark as read (blue)
+    setupReadObserver();
   };
 
   const sanitizeMessageHTML = (text) => {
@@ -300,6 +307,13 @@
   userNameInput.addEventListener('change', () => { viewerName = userNameInput.value || ''; renderMessages(filteredMessages); });
   searchInput.addEventListener('input', applySearch);
 
+  // Help modal
+  const openHelp = () => helpModal.setAttribute('aria-hidden', 'false');
+  const closeHelp = () => helpModal.setAttribute('aria-hidden', 'true');
+  helpBtn.addEventListener('click', openHelp);
+  closeHelpBtn.addEventListener('click', closeHelp);
+  helpModal.addEventListener('click', (e) => { if (e.target === helpModal) closeHelp(); });
+
   // drag-drop
   ;['dragenter','dragover'].forEach(ev => dropzone.addEventListener(ev, (e)=>{ e.preventDefault(); dropzone.classList.add('dragover'); }));
   ;['dragleave','drop'].forEach(ev => dropzone.addEventListener(ev, (e)=>{ e.preventDefault(); dropzone.classList.remove('dragover'); }));
@@ -328,5 +342,32 @@
   composerInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') sendPreview();
   });
+
+  // Paste support: if user pastes raw exported text
+  window.addEventListener('paste', async (e) => {
+    const text = e.clipboardData && e.clipboardData.getData('text');
+    if (text && text.includes(':') && /\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/.test(text)){
+      allMessages = parseContent(text);
+      viewerName = userNameInput.value || viewerName || '';
+      filteredMessages = allMessages;
+      renderMessages(filteredMessages);
+      scrollToBottom();
+    }
+  });
+
+  // Read receipts IntersectionObserver
+  const setupReadObserver = () => {
+    if (readObserver){ readObserver.disconnect(); }
+    readObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          const ticks = entry.target.querySelector('.msg-ticks');
+          if (ticks){ ticks.classList.add('read'); }
+        }
+      });
+    }, { root: chatContainer, threshold: 0.75 });
+
+    document.querySelectorAll('.msg-row.out').forEach(row => readObserver.observe(row));
+  };
 })();
 
