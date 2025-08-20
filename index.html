@@ -9,8 +9,14 @@
   <body>
     <div id="app">
       <header class="topbar">
-        <div class="brand">
-          <div class="logo-circle"></div>
+
+        <div class="brand" title="WhatsApp Chat Viewer">
+          <svg class="wa-logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <path d="M16 3C9.383 3 4 8.383 4 15c0 2.25.61 4.373 1.67 6.195L4 29l8.055-1.637C13.81 28.39 15.86 29 18 29c6.617 0 12-5.383 12-12S24.617 3 18 3h-2z" fill="#25D366"/>
+            <path d="M16 6c-4.963 0-9 4.037-9 9 0 1.986.64 3.819 1.727 5.31l-.981 3.557 3.644-.957A8.95 8.95 0 0 0 16 24c4.963 0 9-4.037 9-9s-4.037-9-9-9z" fill="#fff" opacity=".25"/>
+            <path d="M21.9 18.756c-.108-.177-.395-.283-.825-.496-.43-.212-2.552-1.257-2.947-1.4-.395-.142-.683-.212-.971.213-.289.425-1.115 1.4-1.368 1.688-.253.283-.505.319-.935.106-.43-.212-1.818-.667-3.466-2.128-1.28-1.096-2.141-2.45-2.394-2.875-.253-.425-.027-.656.19-.887.196-.196.43-.512.641-.768.212-.253.283-.425.43-.708.142-.283.071-.531-.035-.744-.106-.212-.971-2.35-1.333-3.205-.351-.827-.708-.714-.971-.726l-.83-.014c-.284 0-.744.106-1.133.531-.389.425-1.488 1.453-1.488 3.543 0 2.09 1.525 4.106 1.739 4.393.212.283 3.003 4.593 7.275 6.241 1.017.44 1.81.703 2.427.899 1.02.324 1.95.279 2.684.169.819-.122 2.552-1.042 2.91-2.049.358-1.006.358-1.868.25-2.045z" fill="#fff"/>
+          </svg>
+
           <div class="brand-text">Chat Viewer</div>
         </div>
         <div class="controls">
@@ -24,6 +30,9 @@
           <button id="resetBtn" class="btn" title="Reset filters and view">Reset</button>
           <button id="clearBtn" class="btn btn-secondary" title="Clear messages">Clear</button>
           <button id="scrollBottomBtn" class="btn" title="Scroll to bottom">Bottom ⤓</button>
+
+          <button id="helpBtn" class="icon-btn" title="How to use">?</button>
+
         </div>
       </header>
 
@@ -31,6 +40,45 @@
         <div id="chatBackground" class="chat-bg"></div>
         <section id="chatContainer" class="chat-container" aria-live="polite"></section>
       </main>
+
+
+      <div id="helpModal" class="modal" aria-hidden="true" role="dialog" aria-label="How to use WhatsApp Chat Viewer">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title">How to Use</div>
+            <button id="closeHelpBtn" class="icon-btn" aria-label="Close help">✕</button>
+          </div>
+          <div class="modal-body">
+            <ol>
+              <li><strong>Export a chat from WhatsApp</strong>
+                <ul>
+                  <li>On Android: Open chat → Menu ⋮ → More → Export chat → Without media → Save .txt</li>
+                  <li>On iPhone: Open chat → Contact info → Export Chat → Without Media → Save .txt</li>
+                </ul>
+              </li>
+              <li><strong>Load it here</strong>
+                <ul>
+                  <li>Click “Upload chat (.txt)” or drag & drop the file into the dropzone.</li>
+                  <li>Or simply paste the exported text into this page (Ctrl/⌘+V).</li>
+                </ul>
+              </li>
+              <li><strong>View in WhatsApp style</strong>
+                <ul>
+                  <li>Enter your name so your messages appear on the right.</li>
+                  <li>Use search to filter, reset to clear filters, and Bottom to jump to latest.</li>
+                  <li>Type a sample message to preview how new messages will look.</li>
+                </ul>
+              </li>
+              <li><strong>Limitations</strong>
+                <ul>
+                  <li>Images, stickers, and audio are not yet rendered (shown as “📎 Media omitted”).</li>
+                  <li>Read/delivered states are simulated for preview purposes.</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
 
       <footer class="composer">
         <input id="composerInput" class="composer-input" placeholder="Type a sample message to preview…" />
