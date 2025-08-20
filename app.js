@@ -12,6 +12,7 @@
   const scrollBottomBtn = document.getElementById('scrollBottomBtn');
   const composerInput = document.getElementById('composerInput');
   const sendPreviewBtn = document.getElementById('sendPreviewBtn');
+
   const helpBtn = document.getElementById('helpBtn');
   const helpModal = document.getElementById('helpModal');
   const closeHelpBtn = document.getElementById('closeHelpBtn');
@@ -21,7 +22,9 @@
   let filteredMessages = []; // after search
   let isGroup = false;
   let viewerName = '';
+
   let readObserver = null;
+
 
   // Utils
   const normalizeMediaOmitted = (text) => {
@@ -240,8 +243,10 @@
 
     chatContainer.appendChild(frag);
 
+
     // Set up read-status observer: when out messages become visible, mark as read (blue)
     setupReadObserver();
+
   };
 
   const sanitizeMessageHTML = (text) => {
@@ -306,13 +311,13 @@
   scrollBottomBtn.addEventListener('click', scrollToBottom);
   userNameInput.addEventListener('change', () => { viewerName = userNameInput.value || ''; renderMessages(filteredMessages); });
   searchInput.addEventListener('input', applySearch);
-
   // Help modal
   const openHelp = () => helpModal.setAttribute('aria-hidden', 'false');
   const closeHelp = () => helpModal.setAttribute('aria-hidden', 'true');
   helpBtn.addEventListener('click', openHelp);
   closeHelpBtn.addEventListener('click', closeHelp);
   helpModal.addEventListener('click', (e) => { if (e.target === helpModal) closeHelp(); });
+
 
   // drag-drop
   ;['dragenter','dragover'].forEach(ev => dropzone.addEventListener(ev, (e)=>{ e.preventDefault(); dropzone.classList.add('dragover'); }));
@@ -343,6 +348,7 @@
     if (e.key === 'Enter') sendPreview();
   });
 
+
   // Paste support: if user pastes raw exported text
   window.addEventListener('paste', async (e) => {
     const text = e.clipboardData && e.clipboardData.getData('text');
@@ -369,5 +375,6 @@
 
     document.querySelectorAll('.msg-row.out').forEach(row => readObserver.observe(row));
   };
+
 })();
 
